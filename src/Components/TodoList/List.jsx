@@ -4,11 +4,13 @@ import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { deleteList, addList, updateList } from '../../app/reduxe/FeaturesSlice/TodoSlice';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../Auth/AuthProvider';
 
 const List = () => {
     const [inputValue, setInputValue] = useState('');
     const [editId, setEditId] = useState(null);
     const navigate = useNavigate();
+    const isAuth = useAuth();
     const dispatch = useDispatch();
     const items = useSelector((state) => state.todo.items);
     const inputRef = useRef();
@@ -53,13 +55,10 @@ const List = () => {
     };
 
     const logoutHandler = () => {
-        alert();
-        setIsAuthenticated(false);
         localStorage.removeItem("authToken");
         navigate("/")
-        // localStorage.removeItem("isAuthenticated");
+        isAuthenticated(false);
     };
-
 
     return (
         <div className="container m-auto mt-4" style={{ maxWidth: "400px" }}>
