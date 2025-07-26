@@ -3,10 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { deleteList, addList, updateList } from '../../app/reduxe/FeaturesSlice/TodoSlice';
+import { useNavigate } from 'react-router-dom';
 
 const List = () => {
     const [inputValue, setInputValue] = useState('');
     const [editId, setEditId] = useState(null);
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const items = useSelector((state) => state.todo.items);
     const inputRef = useRef();
@@ -40,6 +42,8 @@ const List = () => {
     };
 
     const handleEdit = (item) => {
+        console.log(item)
+        console.log("itemsitemsitemsitems", item.text);
         setInputValue(item.text);
         setEditId(item.id);
     };
@@ -48,9 +52,19 @@ const List = () => {
         dispatch(deleteList(id));
     };
 
+    const logoutHandler = () => {
+        alert();
+        setIsAuthenticated(false);
+        localStorage.removeItem("authToken");
+        navigate("/")
+        // localStorage.removeItem("isAuthenticated");
+    };
+
+
     return (
         <div className="container m-auto mt-4" style={{ maxWidth: "400px" }}>
             <h4 className="mb-3 text-center">Add Items</h4>
+            <button className='btn btn-success' onClick={logoutHandler}>Logout</button>
             <div>
                 <div className="input-group mb-1">
                     <input ref={inputRef} type="text" className="form-control" placeholder="Enter item" value={inputValue}
@@ -68,8 +82,8 @@ const List = () => {
             </div>
 
             <ul className="list-group">
-                {items.map((item) => (
-                    <li key={item.id} className="rounded rounded-3 mt-3 border px-2 list-group-item d-flex justify-content-between align-items-center">
+                {items.map((item, index) => (
+                    <li key={item?.index} className="rounded rounded-3 mt-3 border px-2 list-group-item d-flex justify-content-between align-items-center">
                         {item.text}
                         <div className='d-flex gap-2'>
                             <span className="text-success" onClick={() => handleEdit(item)}><FaEdit /></span>
